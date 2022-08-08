@@ -16,11 +16,11 @@ class Pokemon extends Component{
 
         return(
             <div className = "Pokemon">
-                <div>
-                    <h2>#{this.props.id}</h2>
+                <div className = "Pokemon-info">
+                    <h3>#{this.props.id}</h3>
                     <h1>{this.props.name}</h1>
                 </div>
-                <h3>{types}</h3>
+                <h3 className = "Pokemon-types">{types}</h3>
                 <div className = "Pokemon-img">
                     <img src = {this.props.img} alt = {`${this.props.name}-img`}/>
                 </div>

@@ -1,7 +1,6 @@
 import {Component} from "react";
 import axios from "axios";
 import Pokemon from "./Pokemon";
-import unknown from "./assets/images/question-mark.png"
 
 
 class Pokedex extends Component{
@@ -13,7 +12,6 @@ class Pokedex extends Component{
     constructor(props){
         super(props);
         this.state = {pokemonArr: []}
-        this.seenPkm = new Set (this.state.pokemonArr.map(p=>p.id))
     }
 
     componentDidMount(){
@@ -83,7 +81,10 @@ class Pokedex extends Component{
                             img : img
                         }
 
-                        if(!this.seenPkm.has(newPkm.id)) pkmList.push(newPkm); 
+                        //PREVENTING STORAGE OF DUPLICATES
+                        
+                        if(!pkmList.some(el => el.id === newPkm.id)) pkmList.push(newPkm)
+                        else console.log("Found Duplicates");
                 })
             }// END OF WHILE
             this.setState({pokemonArr : pkmList})
