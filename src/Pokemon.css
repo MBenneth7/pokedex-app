@@ -1,0 +1,9 @@
+.Pokemon{
+    border: solid 1px red;
+    margin-top: 5px; 
+}
+
+.Pokemon-unknown{
+    width: 65px;
+    height: 50px;
+}

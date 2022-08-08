@@ -1,4 +1,6 @@
 import {Component} from "react";
+import "./Pokemon.css";
+import unknown from "./assets/images/question-mark.png"
 
 class Pokemon extends Component{
 
@@ -7,22 +9,24 @@ class Pokemon extends Component{
         //GIVE TIME FOR DATA TO RENDER BEFORE COMPONENT MOUNTS
         let types = this.props.type ? this.props.type.join(" ") : "";
         let sprites = this.props.sprites ? this.props.sprites.map((s,i)=>{
-            return <img src = {s} alt = {`${this.props.name}-${i}`}/>
+            if(s !== null) return <img className = "Pokemon-sprites"  src = {s} alt = {`${this.props.name}-${i}`}/>
+            else return <img className = "Pokemon-unknown" src = {unknown} alt = {`${this.props.name}-${i}`}/>
         }) : ""; 
         //////////////////////////////////////////////////////
 
         return(
-            <div>
-                <h1>{this.props.name}</h1>
+            <div className = "Pokemon">
                 <div>
+                    <h2>#{this.props.id}</h2>
+                    <h1>{this.props.name}</h1>
+                </div>
+                <h3>{types}</h3>
+                <div className = "Pokemon-img">
                     <img src = {this.props.img} alt = {`${this.props.name}-img`}/>
                 </div>
-                <div>
+                <div className = "Pokemon-sprite-container">
                     {sprites}
                 </div>
-                <h2>{this.props.id}</h2>
-                <h3>{types}</h3>
-                <h4>{this.props.info}</h4>
             </div>
         )
     }

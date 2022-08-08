@@ -1,6 +1,8 @@
 import {Component} from "react";
 import axios from "axios";
 import Pokemon from "./Pokemon";
+import unknown from "./assets/images/question-mark.png"
+
 
 class Pokedex extends Component{
 
@@ -10,7 +12,7 @@ class Pokedex extends Component{
 
     constructor(props){
         super(props);
-        this.state = {/*pokemon: {},*/ pokemonArr: []}
+        this.state = {pokemonArr: []}
         this.seenPkm = new Set (this.state.pokemonArr.map(p=>p.id))
     }
 
@@ -45,44 +47,6 @@ class Pokedex extends Component{
             const maxPkm = 905;
             let pkmList = [];
 
-        //RETRIEVING INFO & SPRITES
-
-            // await axios.get(`https://pokeapi.co/api/v2/pokemon/${randomPkm}`)
-            //     .then(res =>{
-            //         let pkm = res.data;
-            //         let name = pkm.species.name;
-            //         let id = pkm.id;
-            //         let type = [];
-            //         let sprites = [];
-            //         let img = this.changeImgLink(pkm.id);
-
-            //         //DEALING IF POKEMON HAS MULTIPLE TYPES
-            //         if(pkm.types.length < 1){
-            //             type.push(pkm.types[0].type.name);
-            //         }
-            //         else{
-            //             for(let t of pkm.types){
-            //                 type.push(t.type.name);
-            //             }
-            //         }
-            //         //SPRITES
-            //         sprites.push(pkm.sprites.front_default)
-            //         sprites.push(pkm.sprites.front_shiny)
-            //         sprites.push(pkm.sprites.back_default)
-            //         sprites.push(pkm.sprites.back_shiny)
-
-                    
-            //         this.setState({pokemon: {
-            //             name : name,
-            //             id : id,
-            //             type : type,
-            //             sprites : sprites,
-            //             img : img
-            //         }})
-            //     })
-            //     .catch(e => console.log(e));
-
-
             while(pkmList.length < this.props.maxPkm){
 
                 let randomPkm = Math.floor((Math.random()*maxPkm)+1);
@@ -90,7 +54,7 @@ class Pokedex extends Component{
                 await axios.get(`https://pokeapi.co/api/v2/pokemon/${randomPkm}`)
                     .then(res =>{
                         let pkm = res.data;
-                        let name = pkm.species.name;
+                        let name = pkm.species.name.toUpperCase();
                         let id = pkm.id;
                         let type = [];
                         let sprites = [];
@@ -98,11 +62,11 @@ class Pokedex extends Component{
 
                         //DEALING IF POKEMON HAS MULTIPLE TYPES
                         if(pkm.types.length < 1){
-                            type.push(pkm.types[0].type.name);
+                            type.push(pkm.types[0].type.name.toUppercase());
                         }
                         else{
                             for(let t of pkm.types){
-                                type.push(t.type.name);
+                                type.push(t.type.name.toUpperCase());
                             }
                         }
                         //SPRITES
@@ -122,7 +86,6 @@ class Pokedex extends Component{
                         if(!this.seenPkm.has(newPkm.id)) pkmList.push(newPkm); 
                 })
             }// END OF WHILE
-
             this.setState({pokemonArr : pkmList})
 
         }catch(e){
@@ -130,8 +93,7 @@ class Pokedex extends Component{
         }
 
     } //END OF getPokemon()
-        
-
+    
     renderPokemon(){
         return(
             this.state.pokemonArr.map(p=>(
