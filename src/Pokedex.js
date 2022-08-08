@@ -4,9 +4,14 @@ import Pokemon from "./Pokemon";
 
 class Pokedex extends Component{
 
+    static defaultProps = {
+        maxPkm : 10
+    }
+
     constructor(props){
         super(props);
-        this.state = {pokemon: {}}
+        this.state = {/*pokemon: {},*/ pokemonArr: []}
+        this.seenPkm = new Set (this.state.pokemonArr.map(p=>p.id))
     }
 
     componentDidMount(){
@@ -35,72 +40,115 @@ class Pokedex extends Component{
     }
 
     async getPokemon(){
+
+        try{
+            const maxPkm = 905;
+            let pkmList = [];
+
         //RETRIEVING INFO & SPRITES
 
-        let description = "";
+            // await axios.get(`https://pokeapi.co/api/v2/pokemon/${randomPkm}`)
+            //     .then(res =>{
+            //         let pkm = res.data;
+            //         let name = pkm.species.name;
+            //         let id = pkm.id;
+            //         let type = [];
+            //         let sprites = [];
+            //         let img = this.changeImgLink(pkm.id);
 
-        await axios.get("https://pokeapi.co/api/v2/pokemon/710")
-            .then(res =>{
+            //         //DEALING IF POKEMON HAS MULTIPLE TYPES
+            //         if(pkm.types.length < 1){
+            //             type.push(pkm.types[0].type.name);
+            //         }
+            //         else{
+            //             for(let t of pkm.types){
+            //                 type.push(t.type.name);
+            //             }
+            //         }
+            //         //SPRITES
+            //         sprites.push(pkm.sprites.front_default)
+            //         sprites.push(pkm.sprites.front_shiny)
+            //         sprites.push(pkm.sprites.back_default)
+            //         sprites.push(pkm.sprites.back_shiny)
 
-                let pkm = res.data;
-                let name = pkm.species.name;
-                let id = pkm.id;
-                let type = [];
-                let sprites = [];
-                let img = this.changeImgLink(pkm.id);
-                description = pkm.species.url;
+                    
+            //         this.setState({pokemon: {
+            //             name : name,
+            //             id : id,
+            //             type : type,
+            //             sprites : sprites,
+            //             img : img
+            //         }})
+            //     })
+            //     .catch(e => console.log(e));
 
-                //DEALING IF POKEMON HAS MULTIPLE TYPES
-                if(pkm.types.length < 1){
-                    type.push(pkm.types[0].type.name);
-                }
-                else{
-                    for(let t of pkm.types){
-                        type.push(t.type.name);
-                    }
-                }
-                //SPRITES
-                sprites.push(pkm.sprites.front_default)
-                sprites.push(pkm.sprites.front_shiny)
-                sprites.push(pkm.sprites.back_default)
-                sprites.push(pkm.sprites.back_shiny)
 
-                this.setState({pokemon: {
-                    name : name,
-                    id : id,
-                    type : type,
-                    sprites : sprites,
-                    img : img
-                }})
+            while(pkmList.length < this.props.maxPkm){
 
-                axios.get(description)
-                    .then(res=>{
-                        console.log(res.data.flavor_text_entries[0]);
-                        let info = res.data.flavor_text_entries[0].flavor_text;
-                        this.setState({pokemon:{...this.state.pokemon, info:info}})
-                    })
-                    .catch (e=>console.log(e))
-            })
-            .catch(e => console.log(e));
-    }
+                let randomPkm = Math.floor((Math.random()*maxPkm)+1);
+
+                await axios.get(`https://pokeapi.co/api/v2/pokemon/${randomPkm}`)
+                    .then(res =>{
+                        let pkm = res.data;
+                        let name = pkm.species.name;
+                        let id = pkm.id;
+                        let type = [];
+                        let sprites = [];
+                        let img = this.changeImgLink(pkm.id);
+
+                        //DEALING IF POKEMON HAS MULTIPLE TYPES
+                        if(pkm.types.length < 1){
+                            type.push(pkm.types[0].type.name);
+                        }
+                        else{
+                            for(let t of pkm.types){
+                                type.push(t.type.name);
+                            }
+                        }
+                        //SPRITES
+                        sprites.push(pkm.sprites.front_default)
+                        sprites.push(pkm.sprites.front_shiny)
+                        sprites.push(pkm.sprites.back_default)
+                        sprites.push(pkm.sprites.back_shiny)
+
+                        let newPkm = {
+                            name: name,
+                            id: id,
+                            type : type,
+                            sprites: sprites,
+                            img : img
+                        }
+
+                        if(!this.seenPkm.has(newPkm.id)) pkmList.push(newPkm); 
+                })
+            }// END OF WHILE
+
+            this.setState({pokemonArr : pkmList})
+
+        }catch(e){
+            console.log(e);
+        }
+
+    } //END OF getPokemon()
+        
 
     renderPokemon(){
         return(
-            <div>
-                <Pokemon 
-                    key = {this.state.pokemon.id}
-                    name = {this.state.pokemon.name}
-                    img = {this.state.pokemon.img}
-                    id = {this.state.pokemon.id}
-                    type = {this.state.pokemon.type}
-                    info = {this.state.pokemon.info} 
-                    sprites = {this.state.pokemon.sprites}
-                />
-            </div>
-        )
+            this.state.pokemonArr.map(p=>(
+            <Pokemon 
+                key = {p.id}
+                name = {p.name}
+                img = {p.img}
+                id = {p.id}
+                type = {p.type}
+                sprites = {p.sprites}
+             />
+             ))
+        )     
     }
 
     render(){
+
         return(
             this.renderPokemon()
         )
