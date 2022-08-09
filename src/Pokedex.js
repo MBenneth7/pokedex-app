@@ -56,17 +56,30 @@ class Pokedex extends Component{
                         let id = pkm.id;
                         let type = [];
                         let sprites = [];
+                        let abilities = [];
                         let img = this.changeImgLink(pkm.id);
+                        let stats = [];
 
-                        //DEALING IF POKEMON HAS MULTIPLE TYPES
-                        if(pkm.types.length < 1){
-                            type.push(pkm.types[0].type.name.toUppercase());
+                        // console.log(pkm.stats);
+
+                        //STORING TYPES INTO 'type' ARRAY
+                        for(let t of pkm.types){
+                            type.push(t.type.name.toUpperCase());
                         }
-                        else{
-                            for(let t of pkm.types){
-                                type.push(t.type.name.toUpperCase());
-                            }
+
+                        //STORING ABILITES INTO 'abilities' ARRAY
+                        for(let a of pkm.abilities){
+                            abilities.push(a.ability.name.toUpperCase())
                         }
+
+                        //STORING STATS INTO 'stats' ARRAY
+                        for(let s of pkm.stats){
+                            stats.push({ name: s.stat.name, value: s.base_stat});
+                        }
+
+                        console.log("stats", stats);
+
+
                         //SPRITES
                         sprites.push(pkm.sprites.front_default)
                         sprites.push(pkm.sprites.front_shiny)
@@ -78,7 +91,9 @@ class Pokedex extends Component{
                             id: id,
                             type : type,
                             sprites: sprites,
-                            img : img
+                            img : img,
+                            abilities : abilities,
+                            stats : stats
                         }
 
                         //PREVENTING STORAGE OF DUPLICATES
@@ -105,6 +120,8 @@ class Pokedex extends Component{
                 id = {p.id}
                 type = {p.type}
                 sprites = {p.sprites}
+                abilities = {p.abilities}
+                stats = {p.stats}
              />
              ))
         )     
@@ -113,7 +130,10 @@ class Pokedex extends Component{
     render(){
 
         return(
-            this.renderPokemon()
+            <div className = "Pokedex">
+                <h1>Pokedex</h1>
+                {this.renderPokemon()}
+            </div>
         )
     }
 }
