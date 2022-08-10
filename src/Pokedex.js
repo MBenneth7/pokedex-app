@@ -57,8 +57,8 @@ class Pokedex extends Component{
                         let type = [];
                         let sprites = [];
                         let abilities = [];
-                        let img = this.changeImgLink(pkm.id);
                         let stats = [];
+                        let img = this.changeImgLink(pkm.id);
 
                         // console.log(pkm.stats);
 
@@ -77,10 +77,7 @@ class Pokedex extends Component{
                             stats.push({ name: s.stat.name, value: s.base_stat});
                         }
 
-                        console.log("stats", stats);
-
-
-                        //SPRITES
+                        //STORING SPRITES INTO 'sprites' ARRAY
                         sprites.push(pkm.sprites.front_default)
                         sprites.push(pkm.sprites.front_shiny)
                         sprites.push(pkm.sprites.back_default)
@@ -131,7 +128,7 @@ class Pokedex extends Component{
 
         return(
             <div className = "Pokedex">
-                <h1>Pokedex</h1>
+                <h1>POKEDEX</h1>
                 {this.renderPokemon()}
             </div>
         )
