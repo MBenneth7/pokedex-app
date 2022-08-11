@@ -14,8 +14,8 @@ class Pokemon extends Component{
         this.setState({show: !this.state.show})
     }
 
-
     render(){
+
 
         //GIVE TIME FOR DATA TO RENDER BEFORE COMPONENT MOUNTS
         let types = this.props.type ? this.props.type.join(" ") : "";
@@ -29,14 +29,14 @@ class Pokemon extends Component{
         }) : "";
         let stats = this.props.stats ? this.props.stats.map((s,i)=>{
             return <div>
-                    <h4>{s.name}</h4>
-                    <p>{s.value}</p>
+                        <h4>{s.name}</h4>
+                        <p>{s.value}</p>
                    </div>
         }) : "";
         //////////////////////////////////////////////////////
 
         return(
-            <div className = "Pokemon">
+            <div className = {this.state.show ? "Pokemon-expand" : "Pokemon"}>
 
                 <div className = {this.state.show ? "Pokemon-img-container-show" :"Pokemon-img-container-hide"}>
                     <img className = "Pokemon-img" src = {this.props.img} alt = {`${this.props.name}-img`}/>
@@ -71,7 +71,7 @@ class Pokemon extends Component{
                                 {stats}
                             </div>
                         </div>
-                        
+
                     </div>     
 
                 </div>

@@ -4,11 +4,17 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    border: solid 1px red;
+    border: solid 1px rgb(70, 66, 66);
     margin-top: 1em; 
-    width: 100%;
-    height: auto;
+    max-width: 500px;
+    height: 490px;
     position: relative;
+}
+
+.Pokemon-expand{
+    height: auto;
+    border: solid 1px rgb(70, 66, 66);
+    border-bottom: none;
 }
 
 .Pokemon-card-show{
@@ -16,7 +22,7 @@
     flex-direction: column;
     align-self: flex-start;
     justify-content: flex-end;
-    background-color: plum;
+    background-color: rgb(249, 108, 108);
     color: white;
     width: 100%;
     height: auto;
@@ -28,23 +34,23 @@
     flex-direction: column;
     align-self: flex-start;
     justify-content: flex-end;
-    background-color: plum;
+    background-color: rgb(70, 66, 66);
     color: white;
     position: absolute;
-    top: 85%;
+    top: 87.6%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    height: 30%;
-    padding: 0 1.5em;  
+    max-height: 500px;
+    padding: 0 1.5em 0 2em;
 }
 
 .Pokemon-card-hide ::after{
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: auto;
     content: '';
-    background-color: plum;
+    background-color: rgb(249, 108, 108);
     z-index: -1;
     top: 0;
     right: 0;
@@ -92,7 +98,8 @@
 }
 
 .Pokemon-img{
-    width: 70vw;
+    width: 100%;
+    height: 65%;
 }
 
 .Pokemon-info{
@@ -112,19 +119,19 @@
 }
 
 .Pokemon-info h1{
-    font-size: 2rem;
+    font-size: 1.9rem;
     font-weight: 400;
     letter-spacing: 0.1rem;
 }
 
 .Pokemon-info h3{
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 200;
 }
 
 .Pokemon-details-show{
     height: 100%;
-    /* display: block; */
+    display: block;
     visibility: 1;
     opacity: 1;
     transition: opacity 0.7s ease-in-out;
@@ -132,7 +139,7 @@
 
 .Pokemon-details-hide{
     height: 0;
-    /* display: none; */
+    display: none;
     visibility: 0;
     opacity: 0;
 }
