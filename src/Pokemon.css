@@ -57,8 +57,8 @@
     bottom: 0;
     left: 0;
     transform-origin: top left;
-    transform: skewY(-11deg);
-    border-top-right-radius: 5rem;
+    transform: skewY(-10deg);
+    border-top-right-radius: 4rem;
 }
 
 .Pokemon-intro{

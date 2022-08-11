@@ -1,6 +1,7 @@
 import {Component} from "react";
 import axios from "axios";
 import Pokemon from "./Pokemon";
+import "./Pokedex.css"
 
 
 class Pokedex extends Component{
@@ -12,6 +13,11 @@ class Pokedex extends Component{
     constructor(props){
         super(props);
         this.state = {pokemonArr: []}
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(){
+        this.getPokemon();
     }
 
     componentDidMount(){
@@ -128,8 +134,13 @@ class Pokedex extends Component{
 
         return(
             <div className = "Pokedex">
-                <h1>POKEDEX</h1>
-                {this.renderPokemon()}
+                <nav className = "Pokedex-nav">
+                    <h1>Pokedex</h1>
+                    <button className = "Pokedex-button" onClick = {this.handleClick}>Get Pokemon</button>
+                </nav>
+                <div className= "Pokedex-pkm-container">
+                    {this.renderPokemon()}
+                </div>
             </div>
         )
     }
