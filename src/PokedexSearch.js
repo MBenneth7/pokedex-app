@@ -1,4 +1,4 @@
-import React from "react";
+import {useState} from "react";
 import axios from "axios";
 import Pokemon from "./Pokemon";
 import PokemonSearchResult from "./PokemonSearchResult";
@@ -7,9 +7,9 @@ import searchIcon from "./assets/images/search.png";
 
 export default function PokedexSearch() {
 
-    const [search, setSearch] = React.useState("");
-    const [pokemon, setPokemon] = React.useState();
-    const [loading, setLoading] = React.useState(false);
+    const [search, setSearch] = useState("");
+    const [pokemon, setPokemon] = useState();
+    const [loading, setLoading] = useState(false);
 
     const baseURL = "https://pokeapi.co/api/v2";
     const queryTypes = {
@@ -17,7 +17,7 @@ export default function PokedexSearch() {
     }
 
     async function fetchPokemon(pokemon) {
-        console.log(`${baseURL}/${queryTypes.pokemon}`);
+        // console.log(`${baseURL}/${queryTypes.pokemon}`);
         return await axios.get(`${baseURL}/${queryTypes.pokemon}/${pokemon}`);
         // return await axios.get(`${baseURL}/pokemon`)
     }
@@ -96,9 +96,51 @@ export default function PokedexSearch() {
         setLoading(false);
     }
 
-    // const searchResults = async(query)=>{
+    //TESTING//
 
-    // }
+    const getAllPokemon = async()=>{
+        const limit = 1154;
+        let allPokemon = '';
+
+        await axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}`)
+        .then((res)=>{
+            // console.log(res.data.results);
+            const pokemon = res.data.results.map((p)=>{
+                const {url} = p;
+                const id = url.substring(34, url.length - 1);
+                return{
+                    ...p,
+                    id,
+                }
+            });
+            allPokemon = pokemon;
+        });
+
+        return allPokemon;
+    }
+
+    const renderPokemon = async() =>{
+
+        setLoading(true);
+
+        const allPkm = await getAllPokemon();
+        const displayPkm = [];
+
+        allPkm.forEach((p)=>{
+            if(!p.name.includes(search)) return;
+
+            displayPkm.push(
+                <li>Name: {p.name}, ID: {p.id}</li>
+            )
+        })
+
+        setLoading(false);
+
+        return <ul>{displayPkm}</ul>
+    }
+
+
+    /////////////////////////////////////////////////
 
     return (
 
@@ -106,7 +148,7 @@ export default function PokedexSearch() {
             <form>
                 <input type="text" id="pkm" name="pkm" placeholder="Search for Pokemon"
                     onChange={(e) => {
-                        setSearch(e.target.value);
+                        setSearch(e.target.value.toLowerCase().trim());
                     }
                     }
                 />

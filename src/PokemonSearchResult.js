@@ -1,11 +1,36 @@
+import axios from "axios";
 import {Component} from "react";
+import "./PokemonSearchResult.css"
+import unknown from "./assets/images/question-mark.png"
 
 class PokemonSearchResult extends Component{
+
+    constructor(props){
+        super(props)
+        this.state = {sprite : ""};
+    }
+
+    async componentDidMount(){
+        try{
+            await axios.get(this.props.url)
+            .then((res=>{
+                this.setState({sprite : res.data.sprites.front_default});
+            }))
+        }catch(e){
+            console.log(e)
+        }
+    }
 
     render(){
         return(
             <div className = "PokemonSearchResult">
-                {this.props.id} = {this.props.name} = {this.props.sprite}
+                <div className = "PokemonSearchResult-info">
+                    <h3>{this.props.name}</h3>
+                    <p>{this.props.id}</p>
+                </div>
+                <div className = "PokemonSearchResult-sprite-container">
+                    <img className = "PokemonSearchResult-sprite" src = {this.state.sprite === null ? `${unknown}` : `${this.state.sprite}`} alt = {`${this.props.name}`}/>
+                </div>
             </div>
         )
     }

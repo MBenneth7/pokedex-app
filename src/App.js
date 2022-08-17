@@ -1,6 +1,7 @@
 import { Route, Switch, NavLink } from "react-router-dom";
 import Pokedex from './Pokedex';
 import PokedexSearch from "./PokedexSearch";
+import PokedexSearchTwo from "./PokedexSearchTwo";
 import './App.css';
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
 
       <Switch>
         <Route exact path = '/' component = {Pokedex}/>
-        <Route exact path = '/search' component= {PokedexSearch} />
+        <Route exact path = '/search' component= {PokedexSearchTwo} />
       </Switch>
 
       <nav className="App-nav">
