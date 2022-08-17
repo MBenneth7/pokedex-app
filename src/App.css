@@ -3,3 +3,40 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.active-link{
+  border-bottom : 1px solid #fff;
+}
+
+.App-nav{
+  display: flex;
+  justify-content: space-between;
+  padding: 0.7em 1em;
+  background: linear-gradient(165deg, rgb(249, 108, 108) 50%, rgb(70, 66, 66) 50%);
+  color: #fff;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 99;
+}
+
+.App-nav h1{
+  letter-spacing: 0.1rem;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.App-nav-links{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  width: 130px;
+}
+
+.App-nav-link{
+  list-style: none;
+  color: #fff;
+  text-decoration: none;
+}
+
