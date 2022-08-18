@@ -13,11 +13,6 @@ class Pokemon extends Component{
     componentDidMount(){
         this.setState({loading : true});
         if(this.props.type.length > 0 && this.props.sprites.length > 0 && this.props.abilities.length > 0 && this.props.stats.length > 0) this.setState({loading : false});
-
-        console.log(this.props.type);
-        console.log(this.props.sprites);
-        console.log(this.props.abilities);
-        console.log(this.props.stats);
     }
 
     handleClick(event){
