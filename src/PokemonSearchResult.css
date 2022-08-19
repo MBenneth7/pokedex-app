@@ -1,3 +1,33 @@
+.PokemonSearchResult{
+    display: flex;
+    justify-content: space-between;
+}
+
+.PokemonSearchResult-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1em;
+}
+
+.PokemonSearchResult-info p{
+    align-self: flex-start;
+    color: #fff;
+}
+
+.PokemonSearchResult-info h4{
+    text-transform: uppercase;
+    font-weight: 300;
+    margin-left: 0.8em;
+    color: #fff;
+    letter-spacing: 0.05rem;
+}
+
+.PokemonSearchResult-sprite-container{
+    margin-right: 0.5em;
+}
+
 .PokemonSearchResult-sprite{
     width: 5em;
     height: 5em;

@@ -1,75 +1,111 @@
-import {useState} from "react";
+import { Component } from "react";
 import axios from "axios";
 import Pokemon from "./Pokemon";
 import PokemonSearchResult from "./PokemonSearchResult";
+import Loader from "./Loader";
 import "./PokedexSearch.css";
 import searchIcon from "./assets/images/search.png";
 
-export default function PokedexSearch() {
+class PokedexSearch extends Component {
 
-    const [search, setSearch] = useState("");
-    const [pokemon, setPokemon] = useState();
-    const [loading, setLoading] = useState(false);
+    constructor(props) {
+        super(props)
+        this.state = {
+            loading: false,
+            allPkm: [],
+            searchString: "",
+            result: false,
+            pokemon: {},
+            display: [],
+        }
 
-    const baseURL = "https://pokeapi.co/api/v2";
-    const queryTypes = {
-        pokemon: 'pokemon'
+        this.handleSearchChange = this.handleSearchChange.bind(this);
     }
 
-    async function fetchPokemon(pokemon) {
-        // console.log(`${baseURL}/${queryTypes.pokemon}`);
-        return await axios.get(`${baseURL}/${queryTypes.pokemon}/${pokemon}`);
-        // return await axios.get(`${baseURL}/pokemon`)
+    async componentDidMount() {
+        try {
+            this.setState({ loading: true });
+            const getAllPokemon = await this.getAllPokemon();
+            this.setState({ allPkm: [...getAllPokemon] });
+            this.setState({ loading: false });
+        } catch (e) {
+            console.log(e);
+        }
     }
 
-    function changeImgLink(id){
+    // componentDidUpdate(){
+    //     this.setState({loading : false});
+    // }
+
+    async getAllPokemon() {
+        const limit = 905;
+        let allPokemon = null;
+
+        await axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}`)
+            .then((res) => {
+                const pokemon = res.data.results.map((p) => {
+                    const { url } = p;
+                    const id = url.substring(34, url.length - 1);
+
+                    return {
+                        ...p,
+                        id,
+                    }
+                });
+
+                allPokemon = pokemon;
+            });
+
+
+
+        return allPokemon;
+    }
+
+    changeImgLink(id) {
 
         let stringId = String(id);
-        let changeId ="";
+        let changeId = "";
         let alteredId = "";
 
-        if(id < 100 && id >= 10){
+        if (id < 100 && id >= 10) {
             changeId = '0';
             alteredId = changeId.concat(stringId);
         }
-        else if(id < 10){
+        else if (id < 10) {
             changeId = '00';
             alteredId = changeId.concat(stringId);
         }
-        else 
-            alteredId = String(id);   
+        else
+            alteredId = String(id);
 
         let newImgLink = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${alteredId}.png`;
         return newImgLink;
     }
 
-    const getPokemon = async (query) => {
+    getPokemonDetails(res) {
 
-        setLoading(true);
-
-        const res = await fetchPokemon(query);
-        const pkm = res.data;
+        let pkm = res.data;
         let name = pkm.species.name.toUpperCase();
         let id = pkm.id;
         let type = [];
         let sprites = [];
         let abilities = [];
         let stats = [];
-        let img = changeImgLink(pkm.id);
+        let img = this.changeImgLink(pkm.id);
 
         //STORING TYPES INTO 'type' ARRAY
-        for(let t of pkm.types){
+        for (let t of pkm.types) {
             type.push(t.type.name.toUpperCase());
         }
 
         //STORING ABILITES INTO 'abilities' ARRAY
-        for(let a of pkm.abilities){
+        for (let a of pkm.abilities) {
             abilities.push(a.ability.name.toUpperCase())
         }
 
         //STORING STATS INTO 'stats' ARRAY
-        for(let s of pkm.stats){
-            stats.push({ name: s.stat.name, value: s.base_stat});
+        for (let s of pkm.stats) {
+            stats.push({ name: s.stat.name, value: s.base_stat });
         }
 
         //STORING SPRITES INTO 'sprites' ARRAY
@@ -78,103 +114,154 @@ export default function PokedexSearch() {
         sprites.push(pkm.sprites.back_default)
         sprites.push(pkm.sprites.back_shiny)
 
-
         let newPkm = {
             name: name,
             id: id,
-            type : type,
+            type: type,
             sprites: sprites,
-            img : img,
-            abilities : abilities,
-            stats : stats
+            img: img,
+            abilities: abilities,
+            stats: stats
         }
 
-        setPokemon(newPkm);
-
-        console.log(res.data.results);
-
-        setLoading(false);
+        return newPkm;
     }
 
-    //TESTING//
 
-    const getAllPokemon = async()=>{
-        const limit = 1154;
-        let allPokemon = '';
+    renderPokemon() {
 
-        await axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}`)
-        .then((res)=>{
-            // console.log(res.data.results);
-            const pokemon = res.data.results.map((p)=>{
-                const {url} = p;
-                const id = url.substring(34, url.length - 1);
-                return{
-                    ...p,
-                    id,
-                }
-            });
-            allPokemon = pokemon;
-        });
-
-        return allPokemon;
-    }
-
-    const renderPokemon = async() =>{
-
-        setLoading(true);
-
-        const allPkm = await getAllPokemon();
         const displayPkm = [];
 
-        allPkm.forEach((p)=>{
-            if(!p.name.includes(search)) return;
+        this.state.allPkm.forEach((p) => {
+            if (!p.name.includes(this.state.searchString.toLowerCase().trim())) return;
 
             displayPkm.push(
-                <li>Name: {p.name}, ID: {p.id}</li>
+                <button
+                    className="PokedexSearch-result-btn"
+                    onClick={async () => {
+
+                        let pkm = null;
+
+                        try {
+                            await axios.get(p.url)
+                                .then((res) => {
+                                    pkm = this.getPokemonDetails(res);
+                                    console.log(pkm)
+                                })
+                        } catch (e) {
+                            console.log(e);
+                        }
+
+                        this.setState({
+                            result: true,
+                            searchString: "",
+                            pokemon: { ...pkm },
+                        });
+                    }}
+                >
+                    <PokemonSearchResult
+                        key={p.id}
+                        name={p.name}
+                        id={p.id}
+                        url={p.url}
+                    />
+                </button>
             )
+
+        }); // END OF "forEach" 
+
+        this.setState({
+            display: displayPkm,
         })
-
-        setLoading(false);
-
-        return <ul>{displayPkm}</ul>
     }
 
+    renderPokemonCard() {
 
-    /////////////////////////////////////////////////
+        return (
 
-    return (
+            <Pokemon
+                key={this.state.pokemon.id}
+                name={this.state.pokemon.name}
+                img={this.state.pokemon.img}
+                id={this.state.pokemon.id}
+                type={this.state.pokemon.type}
+                sprites={this.state.pokemon.sprites}
+                abilities={this.state.pokemon.abilities}
+                stats={this.state.pokemon.stats}
 
-        <div className="PokedexSearch">
-            <form>
-                <input type="text" id="pkm" name="pkm" placeholder="Search for Pokemon"
-                    onChange={(e) => {
-                        setSearch(e.target.value.toLowerCase().trim());
-                    }
-                    }
-                />
-                <button className = "PokedexSearch-btn" onClick={(e) => {
-                    getPokemon(search)
-                    e.preventDefault();
-                }}>
-                    <img className = "PokedexSearch-searchIcon" src = {searchIcon} alt = "search-icon"/>
-                </button>
-            </form>
-            <div className="PokedexSearch-results">
-                {!loading && pokemon ? (
-                    <div>
-                        <Pokemon
-                            key = {pokemon.id}
-                            name = {pokemon.name}
-                            img = {pokemon.img}
-                            id = {pokemon.id}
-                            type = {pokemon.type}
-                            sprites = {pokemon.sprites}
-                            abilities = {pokemon.abilities}
-                            stats = {pokemon.stats}
+            />)
+
+    }
+
+    handleSearchChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value,
+            result: false,
+            loading: true
+        });
+
+        this.renderPokemon();
+
+        setTimeout(()=>{
+            this.setState({loading : false})
+        }, 3000)
+    }
+
+    render() {
+
+        if (this.state.loading) {
+            return (
+                <div className="PokedexSearch">
+                    <form>
+                        <input
+                            type="text"
+                            id="searchString"
+                            name="searchString"
+                            value={this.state.searchString || ""}
+                            placeholder="Search for Pokemon"
+                            onChange={this.handleSearchChange}
                         />
-                    </div>
-                ) : null}
+                        <button className="PokedexSearch-btn">
+                            <img className="PokedexSearch-searchIcon" src={searchIcon} alt="search-icon" />
+                        </button>
+                    </form>
+                    {this.state.searchString !== "" ? 
+                        <div className="Pokedex-loader">
+                            <Loader />
+                        </div> 
+                        : 
+                        ""  
+                    }
+                </div>
+            )
+        }
+        return (
+            <div className="PokedexSearch">
+                <form>
+                    <input
+                        type="text"
+                        id="searchString"
+                        name="searchString"
+                        value={this.state.searchString || ""}
+                        placeholder="Search for Pokemon"
+                        onChange={this.handleSearchChange}
+                    />
+                    <button className="PokedexSearch-btn">
+                        <img className="PokedexSearch-searchIcon" src={searchIcon} alt="search-icon" />
+                    </button>
+                </form>
+
+                <div className={this.state.searchString === "" ? "PokedexSearch-results-hide" : "PokedexSearch-results"}>
+                    {/* {this.state.loading ? <p>loading...</p> : this.state.display} */}
+                    {this.state.display}
+                </div>
+
+                <div className={this.state.searchString === "" && this.state.result === true ? "PokedexSearch-result-card" : "PokedexSearch-result-card-hide"}>
+                    {JSON.stringify(this.state.pokemon) !== "{}" ? this.renderPokemonCard() : ""}
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
+
+export default PokedexSearch;

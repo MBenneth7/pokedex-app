@@ -25,8 +25,8 @@ class PokemonSearchResult extends Component{
         return(
             <div className = "PokemonSearchResult">
                 <div className = "PokemonSearchResult-info">
-                    <h3>{this.props.name}</h3>
-                    <p>{this.props.id}</p>
+                    <p>#{this.props.id}</p>
+                    <h4>{this.props.name}</h4>
                 </div>
                 <div className = "PokemonSearchResult-sprite-container">
                     <img className = "PokemonSearchResult-sprite" src = {this.state.sprite === null ? `${unknown}` : `${this.state.sprite}`} alt = {`${this.props.name}`}/>

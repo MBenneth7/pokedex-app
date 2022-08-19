@@ -1,6 +1,7 @@
 import {Component} from "react";
 import axios from "axios";
 import Pokemon from "./Pokemon";
+import Loader from "./Loader";
 import "./Pokedex.css"
 
 
@@ -12,12 +13,12 @@ class Pokedex extends Component{
 
     constructor(props){
         super(props);
-        this.state = {pokemonArr: []}
+        this.state = {pokemonArr: [],loading: false}
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(){
-        this.getPokemon();
+        this.setState({loading : true} , this.getPokemon);
     }
 
     async componentDidMount(){
@@ -105,7 +106,10 @@ class Pokedex extends Component{
                         else console.log("Found Duplicates");
                 })
             }// END OF WHILE
-            this.setState({pokemonArr : pkmList})
+            this.setState({
+                pokemonArr : pkmList,
+                loading : false
+            })
 
         }catch(e){
             console.log(e);
@@ -131,7 +135,13 @@ class Pokedex extends Component{
     }
 
     render(){
-
+        if(this.state.loading){
+            return(
+                <div className = "Pokedex-loader">
+                    <Loader/>
+                </div>
+            )
+        }
         return(
             <div className = "Pokedex">
                 <div className = "Pokedex-btn-container">
