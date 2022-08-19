@@ -12,6 +12,9 @@
 
 .Pokedex-btn-container{
     margin-top: 1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .Pokedex-btn{
@@ -30,4 +33,13 @@
 .Pokedex-btn:hover{
     background-color: rgb(249, 108, 108);
     color: #fff;
+}
+
+@media(min-width : 710px){
+    .Pokedex-pkm-container{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
 }
