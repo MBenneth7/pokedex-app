@@ -248,13 +248,18 @@
 
 @media(min-width : 710px){
     .Pokemon{
-        width: 48%;
+        width: 45%;
+        max-width: 350px;
+    }
+
+    .Pokemon-expand{
+        width: 45%;
         max-width: 350px;
     }
 
     .Pokemon-img-container-show{
         display: flex;
-        height: 55vh;
+        height: 60vh;
         padding: 1.5em;
         flex-direction: column;
         justify-content: center;
@@ -263,7 +268,7 @@
 
     .Pokemon-details-show{
         width: 100%;
-        max-width: 400px;
+        max-width: 350px;
         display: block;
         visibility: 1;
         opacity: 1;

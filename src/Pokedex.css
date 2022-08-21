@@ -11,6 +11,7 @@
 }
 
 .Pokedex-btn-container{
+    max-width: inherit;
     margin-top: 1em;
     display: flex;
     flex-direction: row;
@@ -36,7 +37,21 @@
 }
 
 @media(min-width : 710px){
+
+    .Pokedex{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .Pokedex-btn-container{
+        width: 100%;
+    }
+
     .Pokedex-pkm-container{
+        width: 100%;
+        max-width: 950px;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
