@@ -83,7 +83,9 @@ class Pokemon extends Component{
                             <h1>{this.props.name}</h1>
                             <h3 className = "Pokemon-types">{this.generateTypes()}</h3>
                         </div>
-                        <button onClick = {this.handleClick}>Learn More</button>
+                        <button onClick = {this.handleClick}>
+                            {this.state.show ? <i className="Pokemon-close far fa-arrow-alt-circle-up"></i> : <i className="Pokemon-open far fa-arrow-alt-circle-down"></i> }
+                        </button>
                     </div>
 
                     <div className = {this.state.show ? "Pokemon-details-show" :"Pokemon-details-hide"}>

@@ -1,6 +1,7 @@
 .PokemonSearchResult{
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 
 .PokemonSearchResult-info{

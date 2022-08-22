@@ -22,7 +22,9 @@ class Pokedex extends Component{
     }
 
     async componentDidMount(){
+        this.setState({loading : true});
         await this.getPokemon();
+        this.setState({loading : false});
     }
 
     changeImgLink(id){
@@ -145,7 +147,9 @@ class Pokedex extends Component{
         return(
             <div className = "Pokedex">
                 <div className = "Pokedex-btn-container">
-                    <button className = "Pokedex-btn" onClick = {this.handleClick}>New Pokemon</button>
+                    <button className = "Pokedex-btn" onClick = {this.handleClick}>
+                        <i class="fas fa-random"></i>
+                    </button>
                 </div>
 
                 <div className= "Pokedex-pkm-container">

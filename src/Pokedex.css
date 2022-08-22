@@ -36,6 +36,10 @@
     color: #fff;
 }
 
+.Pokedex-btn i{
+    font-size: 1.3rem;
+}
+
 @media(min-width : 710px){
 
     .Pokedex{

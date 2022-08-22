@@ -13,11 +13,13 @@ function App() {
       </Switch>
 
       <nav className="App-nav">
-        <h1>Pokedex</h1>
-        <ul className="App-nav-links">
-          <NavLink exact activeClassName = "active-link" to = "/search" className="App-nav-link">Search</NavLink>
-          <NavLink exact activeClassName = "active-link" to = "/" className = "App-nav-link">Random</NavLink>
-        </ul>
+        <div className = "App-nav-container">
+          <h1>Pokedex</h1>
+          <ul className="App-nav-links">
+            <NavLink exact activeClassName = "active-link" to = "/search" className="App-nav-link">Search</NavLink>
+            <NavLink exact activeClassName = "active-link" to = "/" className = "App-nav-link">Random</NavLink>
+          </ul>
+        </div>
       </nav>
 
     </div>

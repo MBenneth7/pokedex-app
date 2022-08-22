@@ -9,7 +9,7 @@
 }
 
 .App-nav{
-  display: flex;
+  /* display: flex;
   justify-content: space-between;
   padding: 0.7em 1em;
   background: linear-gradient(165deg, rgb(249, 108, 108) 50%, rgb(70, 66, 66) 50%);
@@ -17,6 +17,22 @@
   position: fixed;
   width: 100%;
   top: 0;
+  z-index: 99; */
+  width: 100%;
+  background: linear-gradient(165deg, rgb(249, 108, 108) 50%, rgb(70, 66, 66) 50%);
+  padding: 0.7em 1em;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.App-nav-container{
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+  width: 100%;
+  max-width: 1200px;
   z-index: 99;
 }
 
